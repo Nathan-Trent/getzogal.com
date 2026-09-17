@@ -83,8 +83,11 @@ export interface Site {
   pricing: Pricing
 }
 
-export const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://dashboard.zogal.app').replace(/\/$/, '')
-const CONTENT_URL = (process.env.CONTENT_URL ?? APP_URL).replace(/\/$/, '')
+// A variable left blank on the host counts as unset, not as an empty
+// address -- otherwise "Get the app" would point at this site's own /signup.
+const env = (name: string) => (process.env[name] ?? '').trim().replace(/\/$/, '')
+export const APP_URL = env('NEXT_PUBLIC_APP_URL') || 'https://dashboard.zogal.app'
+const CONTENT_URL = env('CONTENT_URL') || APP_URL
 
 export const DEFAULTS: Site = {
   home: {
