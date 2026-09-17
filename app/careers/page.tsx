@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getSite } from '@/lib/content'
 import { Container, Eyebrow } from '@/components/ui'
 import { Reveal } from '@/components/motion'
-import { Tree } from '@/components/Tree'
+import Image from 'next/image'
 import { PageTop } from '@/components/PageTop'
 import { Prose } from '@/components/Prose'
 import { Openings, type Filters } from '@/components/sections/Openings'
@@ -42,7 +42,10 @@ export default async function CareersPage({ searchParams }: { searchParams: Prom
                       </p>
                     ) : null}
                   </div>
-                  <Tree className="mx-auto w-full max-w-[360px]" />
+                  {/* One of the leaves from the app's own landing page, at rest. */}
+                  <div className="leaf-float mx-auto w-full max-w-[320px]">
+                    <Image src="/brand/leaf.webp" alt="" width={800} height={800} className="h-auto w-full" />
+                  </div>
                 </div>
               </div>
             </Reveal>

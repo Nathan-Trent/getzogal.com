@@ -227,18 +227,19 @@ body {
   animation-delay: var(--d);
 }
 
-/* Leaves on the tree, swaying a few degrees each on their own loop. */
-@keyframes sway {
+/* A single leaf, breathing: a slow lift and a degree or two of turn. */
+@keyframes float {
   0%,
   100% {
-    transform: rotate(-3deg);
+    transform: translateY(0) rotate(-2deg);
   }
   50% {
-    transform: rotate(3deg);
+    transform: translateY(-10px) rotate(2deg);
   }
 }
-.tree-leaf {
-  animation: sway 5s ease-in-out infinite;
+.leaf-float {
+  animation: float 7s ease-in-out infinite;
+  filter: drop-shadow(0 30px 40px rgba(6, 44, 26, 0.18));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -246,7 +247,7 @@ body {
     transition: none;
   }
   .drift,
-  .tree-leaf {
+  .leaf-float {
     animation: none;
   }
 }
