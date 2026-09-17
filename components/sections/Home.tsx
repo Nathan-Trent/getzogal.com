@@ -126,7 +126,7 @@ export function BusinessBand({ properties, sitewide }: { properties: Property[];
                   ))}
                 </div>
               </div>
-              <BusinessComposition />
+              <BusinessComposition t={sitewide} />
             </div>
           </div>
         </Reveal>
@@ -135,32 +135,36 @@ export function BusinessBand({ properties, sitewide }: { properties: Property[];
   )
 }
 
-/** Three solid tiles, stacked and tilted: "there is a whole system here". Shapes, not words. */
-function BusinessComposition() {
+/** Three solid tiles, stacked and tilted: "there is a whole system here". Every word from the back office. */
+function BusinessComposition({ t }: { t: Text }) {
+  const rows = [t.tile_2_row_1, t.tile_2_row_2, t.tile_2_row_3].filter(Boolean).map((r) => {
+    const [item, amount] = r.split('·').map((x) => x.trim())
+    return { item, amount: amount ?? '' }
+  })
   return (
     <div className="relative mx-auto h-[280px] w-full max-w-[380px] select-none" aria-hidden>
       <TiltCard strength={10} lift baseRotate={-6} className="absolute left-2 top-10 w-[62%] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
-        <div className="h-2.5 w-20 rounded bg-mint" />
-        <div className="mt-3 h-7 w-32 rounded bg-forest/85" />
-        <div className="mt-4 h-2 w-full rounded bg-mint-soft">
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">{t.tile_1_label}</p>
+        <p className="tabular mt-2 text-[28px] font-extrabold text-forest">{t.tile_1_value}</p>
+        <div className="mt-3 h-2 w-full rounded bg-mint-soft">
           <div className="h-2 w-[68%] rounded bg-action" />
         </div>
       </TiltCard>
       <TiltCard strength={10} lift baseRotate={5} className="absolute right-0 top-0 w-[58%] rounded-2xl bg-forest p-5 text-white shadow-[var(--shadow-surface-hover)]">
-        <div className="h-2.5 w-14 rounded bg-signal/80" />
-        <ul className="mt-3 grid gap-2.5">
-          {[70, 55, 62].map((wd, i) => (
-            <li key={i} className="flex items-center justify-between gap-3">
-              <span className="h-2.5 rounded bg-white/70" style={{ width: `${wd}%` }} />
-              <span className={`h-2.5 w-6 rounded ${i === 2 ? 'bg-signal' : 'bg-white/40'}`} />
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-signal">{t.tile_2_label}</p>
+        <ul className="mt-2 grid gap-1.5 text-[13px]">
+          {rows.map((r, i) => (
+            <li key={i} className="flex justify-between gap-3">
+              <span>{r.item}</span>
+              <span className={`tabular ${i === rows.length - 1 ? 'text-signal' : 'text-white/70'}`}>{r.amount}</span>
             </li>
           ))}
         </ul>
       </TiltCard>
       <TiltCard strength={10} lift baseRotate={-2} className="absolute bottom-0 right-8 w-[60%] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
-        <div className="h-2.5 w-24 rounded bg-mint" />
-        <div className="mt-3 h-6 w-28 rounded bg-forest/85" />
-        <div className="mt-3 h-2 w-[80%] rounded bg-mint-soft" />
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">{t.tile_3_label}</p>
+        <p className="tabular mt-2 text-[22px] font-extrabold text-forest">{t.tile_3_value}</p>
+        {t.tile_3_note ? <p className="mt-1 text-[12px] text-muted">{t.tile_3_note}</p> : null}
       </TiltCard>
     </div>
   )
