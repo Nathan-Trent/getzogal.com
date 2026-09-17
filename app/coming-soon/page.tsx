@@ -28,7 +28,7 @@ export default async function ComingSoonPage() {
           {c.line ? <p className="mx-auto mt-2 max-w-[520px] text-[18px] leading-relaxed text-muted">{c.line}</p> : null}
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {c.button ? (
-              <LeafButton href={c.button_link || `${APP_URL}/signup`} size="lg">
+              <LeafButton href={c.button_link || `${APP_URL}/signup`} size="lg" track="coming-soon:start">
                 {c.button}
               </LeafButton>
             ) : null}

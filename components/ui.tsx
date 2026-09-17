@@ -16,7 +16,7 @@ const sizes = {
 
 type Tone = 'green' | 'white'
 
-export function LeafButton({ href, children, size = 'md', tone = 'green', className = '' }: { href: string; children: ReactNode; size?: 'md' | 'lg'; tone?: Tone; className?: string }) {
+export function LeafButton({ href, children, size = 'md', tone = 'green', className = '', track }: { href: string; children: ReactNode; size?: 'md' | 'lg'; tone?: Tone; className?: string; track?: string }) {
   const colours = tone === 'green' ? 'bg-action text-white hover:bg-[#15963f] shadow-[0_8px_24px_rgba(22,163,74,0.28)]' : 'bg-white text-forest hover:bg-[#f2f7f4] shadow-[0_8px_24px_rgba(0,0,0,0.18)]'
   const external = /^https?:\/\//.test(href)
   const cls = `leaf-btn ${pill} ${sizes[size]} ${colours} ${className}`
@@ -29,17 +29,17 @@ export function LeafButton({ href, children, size = 'md', tone = 'green', classN
     </>
   )
   return external ? (
-    <a href={href} className={cls}>
+    <a href={href} className={cls} data-track={track}>
       {inner}
     </a>
   ) : (
-    <Link href={href} className={cls}>
+    <Link href={href} className={cls} data-track={track}>
       {inner}
     </Link>
   )
 }
 
-export function GhostButton({ href, children, size = 'md', tone = 'green', className = '' }: { href: string; children: ReactNode; size?: 'md' | 'lg'; tone?: Tone; className?: string }) {
+export function GhostButton({ href, children, size = 'md', tone = 'green', className = '', track }: { href: string; children: ReactNode; size?: 'md' | 'lg'; tone?: Tone; className?: string; track?: string }) {
   const colours = tone === 'green' ? 'text-forest border border-hair bg-white/60 hover:bg-white' : 'text-white border border-white/25 hover:bg-white/10'
   const external = /^https?:\/\//.test(href)
   // Every button carries the leaf; a secondary one takes it from the right.
@@ -53,11 +53,11 @@ export function GhostButton({ href, children, size = 'md', tone = 'green', class
     </>
   )
   return external ? (
-    <a href={href} className={cls}>
+    <a href={href} className={cls} data-track={track}>
       {inner}
     </a>
   ) : (
-    <Link href={href} className={cls}>
+    <Link href={href} className={cls} data-track={track}>
       {inner}
     </Link>
   )

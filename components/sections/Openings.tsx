@@ -103,11 +103,11 @@ export function Openings({ roles, filters, none }: { roles: Item[]; filters: Fil
                         {o.summary ? <p className="mt-2 max-w-[640px] text-[15px] leading-relaxed text-muted">{o.summary}</p> : null}
                       </div>
                       <div className="flex items-center gap-2 md:justify-end">
-                        <Link href={`/careers/${slug}`} className="inline-flex h-10 items-center gap-1 rounded-full border border-hair bg-white/60 px-4 text-[13px] font-semibold text-forest hover:bg-white">
+                        <Link href={`/careers/${slug}`} data-track={`role:${slug}`} className="inline-flex h-10 items-center gap-1 rounded-full border border-hair bg-white/60 px-4 text-[13px] font-semibold text-forest hover:bg-white">
                           Details <IconArrowRight size={16} />
                         </Link>
                         {open ? (
-                          <a href={o.apply_link} className="inline-flex h-10 items-center rounded-full bg-action px-4 text-[13px] font-semibold text-white hover:bg-[#15963f]" target={/^https?:/.test(o.apply_link) ? '_blank' : undefined} rel="noreferrer">
+                          <a href={o.apply_link} data-track={`apply:${slug}`} className="inline-flex h-10 items-center rounded-full bg-action px-4 text-[13px] font-semibold text-white hover:bg-[#15963f]" target={/^https?:/.test(o.apply_link) ? '_blank' : undefined} rel="noreferrer">
                             Apply
                           </a>
                         ) : (

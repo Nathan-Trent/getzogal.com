@@ -61,7 +61,7 @@ export default async function RolePage({ params }: { params: Promise<{ slug: str
                   </p>
                   <div className="mt-5">
                     {open ? (
-                      <LeafButton href={r.apply_link} className="w-full">
+                      <LeafButton href={r.apply_link} className="w-full" track={`apply:${slug}`}>
                         Apply for this role
                       </LeafButton>
                     ) : (

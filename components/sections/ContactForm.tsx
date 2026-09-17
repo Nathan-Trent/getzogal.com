@@ -109,7 +109,7 @@ export function ContactForm({ copy }: { copy: Text }) {
         </label>
         {error ? <p className="text-[14px] font-semibold text-[#B42318]">{error}</p> : null}
         <div className="flex flex-wrap items-center gap-4">
-          <button type="submit" disabled={state === 'sending'} className="leaf-btn inline-flex h-[50px] items-center justify-center rounded-[var(--radius-pill)] bg-action px-6 text-[14px] font-semibold text-white shadow-[0_8px_24px_rgba(22,163,74,0.28)] transition-colors hover:bg-[#15963f] disabled:opacity-60">
+          <button type="submit" data-track="contact:send" disabled={state === 'sending'} className="leaf-btn inline-flex h-[50px] items-center justify-center rounded-[var(--radius-pill)] bg-action px-6 text-[14px] font-semibold text-white shadow-[0_8px_24px_rgba(22,163,74,0.28)] transition-colors hover:bg-[#15963f] disabled:opacity-60">
             <span className="leaf">
               <Leaf size={92} />
             </span>

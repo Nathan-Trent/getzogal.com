@@ -13,8 +13,8 @@ export function StoreBadges({ play, apple, tone = 'light' }: { play?: string; ap
   const badge = `inline-flex h-12 items-center gap-2.5 rounded-xl border px-3.5 transition-colors ${cls}`
   const external = (href: string) => /^https?:\/\//.test(href)
   const items = [
-    { href: storeLink(play), Icon: IconBrandGooglePlay, small: 'Get it on', big: 'Google Play' },
-    { href: storeLink(apple), Icon: IconBrandApple, small: 'Download on the', big: 'App Store' },
+    { href: storeLink(play), Icon: IconBrandGooglePlay, small: 'Get it on', big: 'Google Play', track: 'store:play' },
+    { href: storeLink(apple), Icon: IconBrandApple, small: 'Download on the', big: 'App Store', track: 'store:apple' },
   ]
   return (
     <div className="flex flex-wrap gap-3">
@@ -29,11 +29,11 @@ export function StoreBadges({ play, apple, tone = 'light' }: { play?: string; ap
           </>
         )
         return external(b.href) ? (
-          <a key={b.big} href={b.href} className={badge} target="_blank" rel="noreferrer" aria-label={`${b.small} ${b.big}`}>
+          <a key={b.big} href={b.href} className={badge} target="_blank" rel="noreferrer" aria-label={`${b.small} ${b.big}`} data-track={b.track}>
             {inner}
           </a>
         ) : (
-          <Link key={b.big} href={b.href} className={badge} aria-label={`${b.small} ${b.big}`}>
+          <Link key={b.big} href={b.href} className={badge} aria-label={`${b.small} ${b.big}`} data-track={b.track}>
             {inner}
           </Link>
         )

@@ -32,12 +32,12 @@ export function Hero({ home }: { home: Text }) {
             <Reveal delay={0.5}>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 {home.hero_button ? (
-                  <LeafButton href={home.hero_button_link} size="lg">
+                  <LeafButton href={home.hero_button_link} size="lg" track="hero:start">
                     {home.hero_button} <IconArrowRight size={18} />
                   </LeafButton>
                 ) : null}
                 {home.hero_secondary ? (
-                  <GhostButton href={home.hero_secondary_link || '/pricing'} size="lg">
+                  <GhostButton href={home.hero_secondary_link || '/pricing'} size="lg" track="hero:secondary">
                     {home.hero_secondary}
                   </GhostButton>
                 ) : null}
@@ -116,11 +116,11 @@ export function BusinessBand({ properties, sitewide }: { properties: Property[];
                 <h2 className="mt-3 text-[36px] font-extrabold leading-[1.05] tracking-[-0.025em] text-forest sm:text-[48px]">{first.name}</h2>
                 {first.line ? <p className="mt-4 max-w-[480px] text-[18px] leading-relaxed text-muted">{first.line}</p> : null}
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <LeafButton href={first.url}>
+                  <LeafButton href={first.url} track={`property:${first.name}`}>
                     {sitewide.business_button ? `${sitewide.business_button} ${first.name}` : first.name} <IconArrowRight size={18} />
                   </LeafButton>
                   {rest.map((p) => (
-                    <GhostButton key={p.url} href={p.url}>
+                    <GhostButton key={p.url} href={p.url} track={`property:${p.name}`}>
                       {p.name}
                     </GhostButton>
                   ))}
@@ -278,7 +278,7 @@ export function Faqs({ faq, faqs }: { faq: Text; faqs: Item[] }) {
             {faq.intro ? <p className="mt-4 max-w-[380px] text-[17px] leading-relaxed text-muted">{faq.intro}</p> : null}
             {faqs.length > shown.length ? (
               <div className="mt-6">
-                <GhostButton href="/faq">More questions</GhostButton>
+                <GhostButton href="/faq" track="faq:more">More questions</GhostButton>
               </div>
             ) : null}
           </Reveal>
@@ -302,7 +302,7 @@ export function Closing({ home, signup }: { home: Text; signup: string }) {
           {home.closing_body ? <p className="mx-auto mt-2 max-w-[520px] text-[18px] leading-relaxed text-muted">{home.closing_body}</p> : null}
           {home.hero_button ? (
             <div className="mt-8 flex justify-center">
-              <LeafButton href={signup} size="lg">
+              <LeafButton href={signup} size="lg" track="closing:start">
                 {home.hero_button} <IconArrowRight size={18} />
               </LeafButton>
             </div>

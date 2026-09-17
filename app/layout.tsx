@@ -3,6 +3,7 @@ import { Manrope } from 'next/font/google'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { Splash } from '@/components/motion'
+import { Tracker } from '@/components/Tracker'
 import { appLink, getSite, navFor } from '@/lib/content'
 import './globals.css'
 
@@ -33,6 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={manrope.variable}>
       <body className="font-sans">
         <Splash />
+        <Tracker />
         <Header appHref={appLink(site)} button={site.sitewide.header_button} nav={navFor(site)} />
         <main>{children}</main>
         <Footer site={site} appHref={appLink(site)} nav={navFor(site)} />

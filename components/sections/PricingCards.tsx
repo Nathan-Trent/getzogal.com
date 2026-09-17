@@ -27,7 +27,7 @@ export function PricingCards({ pricing, page, signup, onDark = false }: { pricin
         {page.free_body ? <p className={`mt-2 text-[16px] leading-relaxed ${muted}`}>{page.free_body}</p> : null}
         {page.free_button ? (
           <div className="mt-6">
-            <LeafButton href={signup} tone={onDark ? 'white' : 'green'}>
+            <LeafButton href={signup} tone={onDark ? 'white' : 'green'} track="pricing:start">
               {page.free_button} <IconArrowRight size={18} />
             </LeafButton>
           </div>
@@ -71,7 +71,7 @@ export function PricingCards({ pricing, page, signup, onDark = false }: { pricin
                 </ul>
               ) : null}
               <div className="mt-auto pt-7">
-                <LeafButton href={signup} tone={onDark ? 'white' : 'green'} className="w-full">
+                <LeafButton href={signup} tone={onDark ? 'white' : 'green'} className="w-full" track={`pricing:${p.key}`}>
                   {free ? page.free_button || 'Start' : p.name}
                 </LeafButton>
               </div>

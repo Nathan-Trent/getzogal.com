@@ -27,7 +27,7 @@ export function Header({ appHref, button, nav }: { appHref: string; button: stri
               {n.label}
             </Link>
           ))}
-          {button ? <LeafButton href={appHref}>{button}</LeafButton> : null}
+          {button ? <LeafButton href={appHref} track="header:app">{button}</LeafButton> : null}
         </nav>
         <button type="button" className="grid h-11 w-11 place-items-center rounded-full text-forest md:hidden" aria-expanded={open} aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen((o) => !o)}>
           {open ? <IconX size={24} /> : <IconMenu2 size={24} />}
@@ -43,7 +43,7 @@ export function Header({ appHref, button, nav }: { appHref: string; button: stri
             ))}
             {button ? (
               <div className="mt-3">
-                <LeafButton href={appHref} className="w-full">
+                <LeafButton href={appHref} className="w-full" track="header:app">
                   {button}
                 </LeafButton>
               </div>
