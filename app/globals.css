@@ -227,11 +227,26 @@ body {
   animation-delay: var(--d);
 }
 
+/* Leaves on the tree, swaying a few degrees each on their own loop. */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+.tree-leaf {
+  animation: sway 5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .leaf-card .leaf-rest {
     transition: none;
   }
-  .drift {
+  .drift,
+  .tree-leaf {
     animation: none;
   }
 }

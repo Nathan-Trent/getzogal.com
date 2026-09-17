@@ -140,6 +140,11 @@ export function signupLink(site: Site): string {
   return site.home.hero_button_link || `${APP_URL}/signup`
 }
 
+/** A role's address on the site, from its title: "Senior Product Engineer" -> senior-product-engineer. */
+export function slugOf(title: string): string {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
 /** The pages that exist only when they have something on them. */
 export function navFor(site: Site): { href: string; label: string }[] {
   const out = [{ href: '/pricing', label: site.pricing_page.eyebrow || 'Pricing' }]
