@@ -4,6 +4,7 @@ import type { Site } from '@/lib/content'
 import { Container, Wordmark } from './ui'
 import { Leaf } from './Leaf'
 import { LeafField } from './motion'
+import { StoreBadges } from './StoreBadges'
 
 export function Footer({ site, appHref, nav }: { site: Site; appHref: string; nav: { href: string; label: string }[] }) {
   const s = site.sitewide
@@ -27,6 +28,14 @@ export function Footer({ site, appHref, nav }: { site: Site; appHref: string; na
           <div>
             <Wordmark tone="white" />
             {s.tagline ? <p className="mt-4 max-w-[360px] text-[16px] leading-relaxed text-white/75">{s.tagline}</p> : null}
+            {s.stores_title ? (
+              <div className="mt-7">
+                <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal">{s.stores_title}</p>
+                <div className="mt-3">
+                  <StoreBadges play={s.play_store_link} apple={s.app_store_link} tone="dark" />
+                </div>
+              </div>
+            ) : null}
             {socials.length ? (
               <div className="mt-6 flex gap-2">
                 {socials.map(({ href, label, Icon }) => (

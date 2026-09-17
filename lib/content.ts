@@ -45,6 +45,7 @@ export interface Site {
   careers: Text
   openings: Item[]
   contact: Text
+  coming_soon: Text
   legal_privacy: Text
   legal_terms: Text
   sitewide: Text
@@ -107,6 +108,7 @@ export async function getSite(): Promise<Site> {
     careers: text(raw.careers),
     openings: list(raw.careers, 'openings'),
     contact: text(raw.contact),
+    coming_soon: text(raw.coming_soon),
     legal_privacy: text(raw.legal_privacy),
     legal_terms: text(raw.legal_terms),
     sitewide: text(raw.sitewide),
@@ -123,6 +125,14 @@ export async function getSite(): Promise<Site> {
 export function appLink(site: Site): string {
   const s = site.sitewide
   return s.header_button_link || s.play_store_link || s.app_store_link || `${APP_URL}/signup`
+}
+
+/** The page a link lands on when the thing behind it is not built yet. */
+export const COMING_SOON = '/coming-soon'
+
+/** A store badge's link: the store, or Coming soon until there is one. */
+export function storeLink(url: string | undefined): string {
+  return url || COMING_SOON
 }
 
 /** The sign-up: the hero button's link. */
