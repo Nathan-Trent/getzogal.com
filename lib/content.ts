@@ -6,55 +6,13 @@
  * Only published content ever comes through that route; drafts do not
  * exist to this site.
  *
- * Every field has a fallback, so a blank field in the back office never
- * makes a hole on the page -- and the site reads as finished before a
- * single word has been typed.
+ * Not one line of copy lives in this repository. Every word is a field
+ * in the back office; a blank field hides its line. The shapes below are
+ * the contract with the back office's lib/marketing/content.ts.
  */
 
-export interface Home {
-  hero_title: string
-  hero_line: string
-  hero_button: string
-  hero_button_link: string
-  hero_image: string
-  point_1_title: string
-  point_1_body: string
-  point_1_image: string
-  /** Which end of the screen the card shows: 'top' or 'bottom'. */
-  point_1_focus: string
-  point_2_title: string
-  point_2_body: string
-  point_2_image: string
-  point_2_focus: string
-  point_3_title: string
-  point_3_body: string
-  point_3_image: string
-  point_3_focus: string
-  closing_title: string
-  closing_body: string
-}
-
-export interface About {
-  title: string
-  body: string
-  image: string
-}
-
-export interface Footer {
-  tagline: string
-  contact_email: string
-  x_link: string
-  instagram_link: string
-  linkedin_link: string
-  play_store_link: string
-  app_store_link: string
-}
-
-export interface Legal {
-  title: string
-  updated: string
-  body: string
-}
+export type Text = Record<string, string>
+export type Item = Record<string, string>
 
 export interface Property {
   name: string
@@ -78,11 +36,18 @@ export interface Pricing {
 }
 
 export interface Site {
-  home: Home
-  about: About
-  footer: Footer
-  legal_privacy: Legal
-  legal_terms: Legal
+  home: Text
+  steps: Item[]
+  pricing_page: Text
+  about: Text
+  faq: Text
+  faqs: Item[]
+  careers: Text
+  openings: Item[]
+  contact: Text
+  legal_privacy: Text
+  legal_terms: Text
+  sitewide: Text
   properties: Property[]
   pricing: Pricing
 }
@@ -93,90 +58,84 @@ const env = (name: string) => (process.env[name] ?? '').trim().replace(/\/$/, ''
 export const APP_URL = env('NEXT_PUBLIC_APP_URL') || 'https://dashboard.zogal.app'
 const CONTENT_URL = env('CONTENT_URL') || APP_URL
 
-export const DEFAULTS: Site = {
-  home: {
-    hero_title: 'See it coming.',
-    hero_line: 'Zogal reads your receipts and bank alerts, works out what is safe to spend today, and tells you before the month runs short.',
-    hero_button: 'Start free',
-    hero_button_link: `${APP_URL}/signup`,
-    hero_image: '/phones/home.webp',
-    point_1_title: 'Log it in seconds',
-    point_1_body: 'Snap a receipt, forward a bank alert, or tap it in. Zogal reads the numbers and sorts them for you.',
-    point_1_image: '/phones/scan.webp',
-    point_1_focus: 'bottom',
-    point_2_title: 'Know before it happens',
-    point_2_body: 'Every day Zogal works out what you can spend and still make it to payday — and says so plainly when the pace will not hold.',
-    point_2_image: '/phones/insight-runout.webp',
-    point_2_focus: 'top',
-    point_3_title: 'Every naira, at once',
-    point_3_body: 'Where the money went this period, by category, with the ones that grew called out. No spreadsheet, no guessing.',
-    point_3_image: '/phones/period.webp',
-    point_3_focus: 'bottom',
-    closing_title: 'Money you can see coming.',
-    closing_body: 'Free to start. Naira first, dollars too. Nothing to set up but you.',
-  },
-  about: {
-    title: 'About Zogal',
-    body: 'Zogal is built in Nigeria for people who get paid and then have to make it last.\n\nMost money apps were made for people with steady salaries and tidy bank feeds. Zogal starts from the other end: what came in, what has to go out, and what that leaves for today.',
-    image: '',
-  },
-  footer: {
-    tagline: 'Money you can see coming.',
-    contact_email: 'hello@zogal.app',
-    x_link: '',
-    instagram_link: '',
-    linkedin_link: '',
-    play_store_link: '',
-    app_store_link: '',
-  },
-  legal_privacy: { title: 'Privacy policy', updated: '', body: 'This page has not been published yet.' },
-  legal_terms: { title: 'Terms of service', updated: '', body: 'This page has not been published yet.' },
-  properties: [],
-  pricing: { intro: 'Start free. Upgrade when Zogal has earned it.', plans: [], pushedAt: null },
+/** The bundled phone screens, used only when no picture is chosen. */
+const PHONES = { hero: '/phones/home.webp', point_1: '/phones/scan.webp', point_2: '/phones/insight-runout.webp', point_3: '/phones/period.webp' }
+
+function text(published: unknown): Text {
+  const out: Text = {}
+  if (published && typeof published === 'object') {
+    for (const [k, v] of Object.entries(published as Record<string, unknown>)) if (typeof v === 'string') out[k] = v.trim()
+  }
+  return out
 }
 
-/** A published piece over its defaults: blank fields fall back, field by field. */
-function merge<T extends object>(fallback: T, published: unknown): T {
-  const out: Record<string, unknown> = { ...(fallback as Record<string, unknown>) }
-  if (published && typeof published === 'object') {
-    for (const [k, v] of Object.entries(published as Record<string, unknown>)) {
-      if (k in out && typeof v === 'string' && v.trim() !== '') out[k] = v
-    }
-  }
-  return out as T
+function list(published: unknown, key: string): Item[] {
+  const v = published && typeof published === 'object' ? (published as Record<string, unknown>)[key] : null
+  if (!Array.isArray(v)) return []
+  return v.filter((it) => it && typeof it === 'object').map((it) => text(it))
 }
 
 export async function getSite(): Promise<Site> {
-  let raw: Partial<Record<keyof Site, unknown>> = {}
+  let raw: Record<string, unknown> = {}
   try {
     const res = await fetch(`${CONTENT_URL}/api/marketing/content`, {
       // Five minutes on its own; at once when the back office calls /api/revalidate.
       next: { tags: ['content'], revalidate: 300 },
     })
-    if (res.ok) raw = (await res.json()) as typeof raw
+    if (res.ok) raw = (await res.json()) as Record<string, unknown>
     else console.error('content fetch answered', res.status)
   } catch (err) {
     // The site must never be blank because the app is having a moment.
     console.error('content fetch failed:', err)
   }
 
+  const home = text(raw.home)
+  home.hero_image ||= PHONES.hero
+  home.point_1_image ||= PHONES.point_1
+  home.point_2_image ||= PHONES.point_2
+  home.point_3_image ||= PHONES.point_3
+  home.hero_button_link ||= `${APP_URL}/signup`
+
   const pricing = raw.pricing as Partial<Pricing> | undefined
   return {
-    home: merge(DEFAULTS.home, raw.home),
-    about: merge(DEFAULTS.about, raw.about),
-    footer: merge(DEFAULTS.footer, raw.footer),
-    legal_privacy: merge(DEFAULTS.legal_privacy, raw.legal_privacy),
-    legal_terms: merge(DEFAULTS.legal_terms, raw.legal_terms),
+    home,
+    steps: list(raw.home, 'steps'),
+    pricing_page: text(raw.pricing_page),
+    about: text(raw.about),
+    faq: text(raw.faq),
+    faqs: list(raw.faq, 'items'),
+    careers: text(raw.careers),
+    openings: list(raw.careers, 'openings'),
+    contact: text(raw.contact),
+    legal_privacy: text(raw.legal_privacy),
+    legal_terms: text(raw.legal_terms),
+    sitewide: text(raw.sitewide),
     properties: Array.isArray(raw.properties) ? (raw.properties as Property[]).filter((p) => p && p.name && p.url) : [],
     pricing: {
-      intro: pricing?.intro?.trim() || DEFAULTS.pricing.intro,
+      intro: pricing?.intro?.trim() || '',
       plans: Array.isArray(pricing?.plans) ? pricing.plans : [],
       pushedAt: pricing?.pushedAt ?? null,
     },
   }
 }
 
-/** The "Get the app" destination: a store if one is set, else the app's sign-up. */
-export function appLink(footer: Footer): string {
-  return footer.play_store_link || footer.app_store_link || `${APP_URL}/signup`
+/** Where the header button goes: the set link, a store if set, else the app's sign-up. */
+export function appLink(site: Site): string {
+  const s = site.sitewide
+  return s.header_button_link || s.play_store_link || s.app_store_link || `${APP_URL}/signup`
+}
+
+/** The sign-up: the hero button's link. */
+export function signupLink(site: Site): string {
+  return site.home.hero_button_link || `${APP_URL}/signup`
+}
+
+/** The pages that exist only when they have something on them. */
+export function navFor(site: Site): { href: string; label: string }[] {
+  const out = [{ href: '/pricing', label: site.pricing_page.eyebrow || 'Pricing' }]
+  if (site.about.title) out.push({ href: '/about', label: site.about.eyebrow || 'About' })
+  if (site.faqs.length) out.push({ href: '/faq', label: site.faq.eyebrow || 'FAQs' })
+  if (site.careers.title) out.push({ href: '/careers', label: site.careers.eyebrow || 'Careers' })
+  if (site.contact.title) out.push({ href: '/contact', label: site.contact.eyebrow || 'Contact' })
+  return out
 }

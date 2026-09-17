@@ -26,7 +26,7 @@ export function Reveal({ children, delay = 0, className = '' }: { children: Reac
 /** The hero headline: each word rises into place, once. */
 export function WordPullUp({ text, className = '' }: { text: string; className?: string }) {
   const reduced = useReducedMotion()
-  const words = text.split(' ')
+  const words = (text ?? '').split(' ').filter(Boolean)
   return (
     <h1 className={className} aria-label={text}>
       {words.map((w, i) => (

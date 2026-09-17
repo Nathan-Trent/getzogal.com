@@ -1,16 +1,21 @@
 import Link from 'next/link'
 import { IconBrandInstagram, IconBrandLinkedin, IconBrandX, IconMail } from '@tabler/icons-react'
-import type { Footer as FooterContent, Property } from '@/lib/content'
+import type { Site } from '@/lib/content'
 import { Container, Wordmark } from './ui'
 import { Leaf } from './Leaf'
 import { LeafField } from './motion'
 
-export function Footer({ content, properties, appHref }: { content: FooterContent; properties: Property[]; appHref: string }) {
+export function Footer({ site, appHref, nav }: { site: Site; appHref: string; nav: { href: string; label: string }[] }) {
+  const s = site.sitewide
   const socials = [
-    { href: content.x_link, label: 'X', Icon: IconBrandX },
-    { href: content.instagram_link, label: 'Instagram', Icon: IconBrandInstagram },
-    { href: content.linkedin_link, label: 'LinkedIn', Icon: IconBrandLinkedin },
-  ].filter((s) => s.href)
+    { href: s.x_link, label: 'X', Icon: IconBrandX },
+    { href: s.instagram_link, label: 'Instagram', Icon: IconBrandInstagram },
+    { href: s.linkedin_link, label: 'LinkedIn', Icon: IconBrandLinkedin },
+  ].filter((x) => x.href)
+  const legal = [
+    site.legal_privacy.title ? { href: '/privacy', label: site.legal_privacy.title } : null,
+    site.legal_terms.title ? { href: '/terms', label: site.legal_terms.title } : null,
+  ].filter((x): x is { href: string; label: string } => Boolean(x))
 
   return (
     <footer className="band mt-24">
@@ -21,7 +26,7 @@ export function Footer({ content, properties, appHref }: { content: FooterConten
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Wordmark tone="white" />
-            <p className="mt-4 max-w-[360px] text-[16px] leading-relaxed text-white/75">{content.tagline}</p>
+            {s.tagline ? <p className="mt-4 max-w-[360px] text-[16px] leading-relaxed text-white/75">{s.tagline}</p> : null}
             {socials.length ? (
               <div className="mt-6 flex gap-2">
                 {socials.map(({ href, label, Icon }) => (
@@ -34,30 +39,38 @@ export function Footer({ content, properties, appHref }: { content: FooterConten
           </div>
 
           <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal">Zogal</p>
+            {s.column_1_title ? <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal">{s.column_1_title}</p> : null}
             <ul className="mt-4 grid gap-2.5 text-[15px] text-white/80">
-              <li><a href={appHref} className="hover:text-white">Get the app</a></li>
-              <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
-              <li><Link href="/about" className="hover:text-white">About</Link></li>
-              {properties.map((p) => (
+              {s.header_button ? (
+                <li>
+                  <a href={appHref} className="hover:text-white">{s.header_button}</a>
+                </li>
+              ) : null}
+              {nav.map((n) => (
+                <li key={n.href}>
+                  <Link href={n.href} className="hover:text-white">{n.label}</Link>
+                </li>
+              ))}
+              {site.properties.map((p) => (
                 <li key={p.url}>
-                  <a href={p.url} className="hover:text-white" target="_blank" rel="noreferrer">
-                    {p.name}
-                  </a>
+                  <a href={p.url} className="hover:text-white" target="_blank" rel="noreferrer">{p.name}</a>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal">The fine print</p>
+            {s.column_2_title ? <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-signal">{s.column_2_title}</p> : null}
             <ul className="mt-4 grid gap-2.5 text-[15px] text-white/80">
-              <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
-              <li><Link href="/terms" className="hover:text-white">Terms</Link></li>
-              {content.contact_email ? (
+              {legal.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="hover:text-white">{l.label}</Link>
+                </li>
+              ))}
+              {s.contact_email ? (
                 <li>
-                  <a href={`mailto:${content.contact_email}`} className="inline-flex items-center gap-1.5 hover:text-white">
-                    <IconMail size={16} /> {content.contact_email}
+                  <a href={`mailto:${s.contact_email}`} className="inline-flex items-center gap-1.5 hover:text-white">
+                    <IconMail size={16} /> {s.contact_email}
                   </a>
                 </li>
               ) : null}
@@ -66,8 +79,8 @@ export function Footer({ content, properties, appHref }: { content: FooterConten
         </div>
 
         <div className="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-[13px] text-white/50">
-          <span>© {new Date().getFullYear()} Zogal. Made in Nigeria.</span>
-          <span>Naira first. Dollars too.</span>
+          <span>© {new Date().getFullYear()} {s.bottom_left}</span>
+          {s.bottom_right ? <span>{s.bottom_right}</span> : null}
         </div>
       </Container>
     </footer>

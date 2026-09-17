@@ -3,7 +3,7 @@ import { Manrope } from 'next/font/google'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { Splash } from '@/components/motion'
-import { appLink, getSite } from '@/lib/content'
+import { appLink, getSite, navFor } from '@/lib/content'
 import './globals.css'
 
 const manrope = Manrope({
@@ -13,26 +13,29 @@ const manrope = Manrope({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://getzogal.com'),
-  title: { default: 'Zogal — See it coming', template: '%s · Zogal' },
-  description: 'Zogal reads your receipts and bank alerts, works out what is safe to spend today, and tells you before the month runs short.',
-  openGraph: { type: 'website', siteName: 'Zogal', images: ['/brand/zogal-512.png'] },
-  twitter: { card: 'summary' },
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite()
+  const title = site.home.hero_title ? `Zogal — ${site.home.hero_title.replace(/\.$/, '')}` : 'Zogal'
+  return {
+    metadataBase: new URL('https://getzogal.com'),
+    title: { default: title, template: '%s · Zogal' },
+    description: site.home.hero_line || undefined,
+    openGraph: { type: 'website', siteName: 'Zogal', images: ['/brand/zogal-512.png'] },
+    twitter: { card: 'summary' },
+  }
 }
 
 export const viewport: Viewport = { themeColor: '#062C1A' }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const site = await getSite()
-  const app = appLink(site.footer)
   return (
     <html lang="en" className={manrope.variable}>
       <body className="font-sans">
         <Splash />
-        <Header appHref={app} />
+        <Header appHref={appLink(site)} button={site.sitewide.header_button} nav={navFor(site)} />
         <main>{children}</main>
-        <Footer content={site.footer} properties={site.properties} appHref={app} />
+        <Footer site={site} appHref={appLink(site)} nav={navFor(site)} />
       </body>
     </html>
   )

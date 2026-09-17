@@ -2,16 +2,16 @@
 
 import { useState } from 'react'
 import { IconArrowRight, IconCheck } from '@tabler/icons-react'
-import type { Pricing } from '@/lib/content'
+import type { Pricing, Text } from '@/lib/content'
 import { LeafButton } from '@/components/ui'
 import { TiltCard } from '@/components/motion'
 
 /**
  * The plans, exactly as Finance published them and Marketing pushed them.
- * Nothing here is typed on the site. With no plans pushed yet, the one
- * true thing is shown: it is free to start.
+ * Nothing here is typed on the site. With no plans pushed yet, the page's
+ * own "free to start" lines show instead.
  */
-export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pricing; signup: string; onDark?: boolean }) {
+export function PricingCards({ pricing, page, signup, onDark = false }: { pricing: Pricing; page: Text; signup: string; onDark?: boolean }) {
   const anyYearly = pricing.plans.some((p) => p.prices.some((x) => x.interval === 'year'))
   const [interval, setInterval] = useState<'month' | 'year'>('month')
 
@@ -20,15 +20,18 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
   const muted = onDark ? 'text-white/65' : 'text-muted'
 
   if (pricing.plans.length === 0) {
+    if (!page.free_title) return null
     return (
       <TiltCard strength={5} lift className={`${card} max-w-[520px]`}>
-        <h3 className={`text-[26px] font-extrabold tracking-[-0.02em] ${title}`}>Free to start</h3>
-        <p className={`mt-2 text-[16px] leading-relaxed ${muted}`}>Everything you need to see your money coming. Paid plans arrive when Zogal has earned them.</p>
-        <div className="mt-6">
-          <LeafButton href={signup} tone={onDark ? 'white' : 'green'}>
-            Start free <IconArrowRight size={18} />
-          </LeafButton>
-        </div>
+        <h3 className={`text-[26px] font-extrabold tracking-[-0.02em] ${title}`}>{page.free_title}</h3>
+        {page.free_body ? <p className={`mt-2 text-[16px] leading-relaxed ${muted}`}>{page.free_body}</p> : null}
+        {page.free_button ? (
+          <div className="mt-6">
+            <LeafButton href={signup} tone={onDark ? 'white' : 'green'}>
+              {page.free_button} <IconArrowRight size={18} />
+            </LeafButton>
+          </div>
+        ) : null}
       </TiltCard>
     )
   }
@@ -69,7 +72,7 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
               ) : null}
               <div className="mt-auto pt-7">
                 <LeafButton href={signup} tone={onDark ? 'white' : 'green'} className="w-full">
-                  {free ? 'Start free' : `Get ${p.name}`}
+                  {free ? page.free_button || 'Start' : p.name}
                 </LeafButton>
               </div>
             </TiltCard>
