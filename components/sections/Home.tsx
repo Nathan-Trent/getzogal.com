@@ -2,7 +2,7 @@ import { IconArrowRight, IconBolt, IconEye, IconReceipt } from '@tabler/icons-re
 import type { Home, Pricing, Property } from '@/lib/content'
 import { Leaf } from '@/components/Leaf'
 import { Container, Eyebrow, GhostButton, LeafButton, Phone } from '@/components/ui'
-import { HeroPhone, Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
+import { Branch, HeroPhone, Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
 import { PricingCards } from './PricingCards'
 
 // ---------------------------------------------------------------------------
@@ -58,18 +58,26 @@ export function Truths() {
   return (
     <section className="pb-8">
       <Container>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {TRUTHS.map((t, i) => (
-            <Reveal key={t.title} delay={i * 0.08}>
-              <div className="surface surface-hover h-full p-6">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-mint-soft text-action">
-                  <t.Icon size={22} />
-                </span>
-                <h3 className="mt-4 text-[17px] font-extrabold tracking-[-0.01em] text-forest">{t.title}</h3>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{t.body}</p>
-              </div>
-            </Reveal>
-          ))}
+        {/* Three leaves on one branch: a stem draws itself behind the row
+            once, as it comes into view; each card carries a leaf at rest. */}
+        <div className="relative">
+          <Branch />
+          <div className="relative grid gap-4 sm:grid-cols-3">
+            {TRUTHS.map((t, i) => (
+              <Reveal key={t.title} delay={i * 0.08}>
+                <div className="surface surface-hover leaf-card h-full p-6">
+                  <span className="leaf-rest">
+                    <Leaf size={128} />
+                  </span>
+                  <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-mint-soft text-action">
+                    <t.Icon size={22} />
+                  </span>
+                  <h3 className="relative mt-4 text-[17px] font-extrabold tracking-[-0.01em] text-forest">{t.title}</h3>
+                  <p className="relative mt-1.5 text-[15px] leading-relaxed text-muted">{t.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

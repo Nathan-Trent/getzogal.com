@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 
 /**
@@ -160,6 +160,49 @@ function LeafDot() {
       <path d="M8 92 C 12 50, 40 18, 92 8 C 90 40, 74 76, 36 90 C 26 93, 16 94, 8 92 Z" fill="url(#stem-leaf)" />
       <path d="M8 92 C 30 72, 56 46, 92 8" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
+  )
+}
+
+/**
+ * The branch behind the three truths. A gentle curve across the row on a
+ * wide screen, a straight stem down it when the cards stack; drawn once as
+ * it scrolls into view, still afterwards. Sits behind the cards, so most
+ * of it is hidden by them and only the joins show -- which is the point.
+ */
+export function Branch() {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const reduced = useReducedMotion()
+  const draw = reduced || inView
+  return (
+    <div ref={ref} className="pointer-events-none absolute inset-0" aria-hidden>
+      <svg className="hidden h-full w-full sm:block" viewBox="0 0 1000 200" preserveAspectRatio="none" fill="none">
+        <motion.path
+          d="M -20 150 C 150 60, 300 60, 500 110 S 850 170, 1020 60"
+          stroke="#16A34A"
+          strokeOpacity="0.45"
+          strokeWidth="3"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: draw ? 1 : 0 }}
+          transition={{ duration: 1.6, ease: [0.2, 0.8, 0.2, 1] }}
+        />
+      </svg>
+      <svg className="h-full w-full sm:hidden" viewBox="0 0 100 1000" preserveAspectRatio="none" fill="none">
+        <motion.path
+          d="M 50 -10 C 30 250, 70 500, 50 750 S 40 950, 50 1010"
+          stroke="#16A34A"
+          strokeOpacity="0.45"
+          strokeWidth="3"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: draw ? 1 : 0 }}
+          transition={{ duration: 1.6, ease: [0.2, 0.8, 0.2, 1] }}
+        />
+      </svg>
+    </div>
   )
 }
 
