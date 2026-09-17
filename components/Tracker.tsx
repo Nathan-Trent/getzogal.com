@@ -13,7 +13,8 @@ import { usePathname } from 'next/navigation'
  * utm_* from the first address they landed on, kept for the visit.
  * Where: worked out by the app from the request, not here.
  */
-const APP = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://dashboard.zogal.app').replace(/\/$/, '')
+// A blank variable on the host counts as unset (|| not ??), or this would post to the site itself.
+const APP = ((process.env.NEXT_PUBLIC_APP_URL ?? '').trim() || 'https://dashboard.zogal.app').replace(/\/$/, '')
 const ENDPOINT = `${APP}/api/marketing/hit`
 
 function uuid(): string {

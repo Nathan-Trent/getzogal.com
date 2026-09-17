@@ -5,8 +5,9 @@ import { IconArrowRight, IconCheck } from '@tabler/icons-react'
 import type { Text } from '@/lib/content'
 import { Leaf } from '@/components/Leaf'
 
-const APP = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://dashboard.zogal.app').replace(/\/$/, '')
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''
+// A blank variable on the host counts as unset (|| not ??), or this would post to the site itself.
+const APP = ((process.env.NEXT_PUBLIC_APP_URL ?? '').trim() || 'https://dashboard.zogal.app').replace(/\/$/, '')
+const SITE_KEY = (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '').trim()
 
 declare global {
   interface Window {
