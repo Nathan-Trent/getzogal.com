@@ -169,11 +169,31 @@ function LeafDot() {
  * it scrolls into view, still afterwards. Sits behind the cards, so most
  * of it is hidden by them and only the joins show -- which is the point.
  */
-export function Branch() {
+export function Branch({ direction = 'across' }: { direction?: 'across' | 'down' }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const reduced = useReducedMotion()
   const draw = reduced || inView
+  if (direction === 'down') {
+    // Weaves left-right down a stack of cards, one bend per card.
+    return (
+      <div ref={ref} className="pointer-events-none absolute inset-0" aria-hidden>
+        <svg className="h-full w-full" viewBox="0 0 1000 1000" preserveAspectRatio="none" fill="none">
+          <motion.path
+            d="M 120 -10 C 200 200, 800 250, 860 400 S 200 650, 140 800 S 700 950, 880 1010"
+            stroke="#16A34A"
+            strokeOpacity="0.45"
+            strokeWidth="3"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: draw ? 1 : 0 }}
+            transition={{ duration: 2.2, ease: [0.2, 0.8, 0.2, 1] }}
+          />
+        </svg>
+      </div>
+    )
+  }
   return (
     <div ref={ref} className="pointer-events-none absolute inset-0" aria-hidden>
       <svg className="hidden h-full w-full sm:block" viewBox="0 0 1000 200" preserveAspectRatio="none" fill="none">

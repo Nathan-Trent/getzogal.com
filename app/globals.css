@@ -175,6 +175,35 @@ body {
   opacity: 0.24;
   transform: rotate(-4deg) translate(-4px, -5px);
 }
+/* Where the leaf sits. The tip points away from the corner it grows from. */
+.leaf-card .leaf-rest.at-tr {
+  bottom: auto;
+  top: -30px;
+  transform: rotate(80deg);
+}
+.leaf-card:hover .leaf-rest.at-tr {
+  transform: rotate(86deg) translate(4px, -4px);
+}
+.leaf-card .leaf-rest.at-tl {
+  right: auto;
+  bottom: auto;
+  left: -34px;
+  top: -30px;
+  transform: rotate(170deg);
+}
+.leaf-card:hover .leaf-rest.at-tl {
+  transform: rotate(176deg) translate(4px, 4px);
+}
+.leaf-card .leaf-rest.lg {
+  width: 220px;
+  height: 220px;
+  right: -60px;
+  bottom: -70px;
+  opacity: 0.12;
+}
+.leaf-card:hover .leaf-rest.lg {
+  opacity: 0.18;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .leaf-card .leaf-rest {

@@ -66,7 +66,7 @@ export function Truths() {
             {TRUTHS.map((t, i) => (
               <Reveal key={t.title} delay={i * 0.08}>
                 <div className="surface surface-hover leaf-card h-full p-6">
-                  <span className="leaf-rest">
+                  <span className={`leaf-rest ${i === 1 ? 'at-tr' : ''}`}>
                     <Leaf size={128} />
                   </span>
                   <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-mint-soft text-action">
@@ -94,8 +94,11 @@ export function BusinessBand({ properties }: { properties: Property[] }) {
     <section className="py-20 sm:py-28">
       <Container>
         <Reveal>
-          <div className="surface relative overflow-hidden p-8 sm:p-12">
+          <div className="surface leaf-card relative overflow-hidden p-8 sm:p-12">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_400px_at_100%_0%,rgba(198,229,213,0.55),transparent_60%)]" />
+            <span className="leaf-rest lg">
+              <Leaf size={220} />
+            </span>
             <div className="relative grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]">
               <div>
                 <Eyebrow>Also from Zogal</Eyebrow>
@@ -165,10 +168,17 @@ export function Reasons({ home }: { home: Home }) {
           <Eyebrow>Why Zogal</Eyebrow>
           <h2 className="mt-3 max-w-[640px] text-[34px] font-extrabold leading-[1.08] tracking-[-0.025em] text-forest sm:text-[46px]">Built for money that arrives, then has to last.</h2>
         </Reveal>
-        <div className="mt-12 grid gap-8 sm:mt-16">
+        {/* One stem weaves down through the three cards; each carries a leaf
+            on the side away from its phone, so the eye zigzags with the stem. */}
+        <div className="relative mt-12 sm:mt-16">
+          <Branch direction="down" />
+          <div className="relative grid gap-8">
           {points.map((p, i) => (
             <Reveal key={p.title}>
-              <TiltCard className="surface surface-hover overflow-hidden">
+              <TiltCard className="surface surface-hover leaf-card overflow-hidden">
+                <span className={`leaf-rest ${i % 2 ? 'at-tr' : 'at-tl'}`}>
+                  <Leaf size={128} />
+                </span>
                 <div className={`grid items-center gap-8 p-7 sm:p-10 md:grid-cols-2 ${i % 2 ? 'md:[&>*:first-child]:order-2' : ''}`}>
                   <div>
                     <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-action">0{i + 1}</p>
@@ -188,6 +198,7 @@ export function Reasons({ home }: { home: Home }) {
               </TiltCard>
             </Reveal>
           ))}
+          </div>
         </div>
       </Container>
     </section>
