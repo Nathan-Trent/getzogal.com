@@ -23,7 +23,7 @@ export function LeafButton({ href, children, size = 'md', tone = 'green', classN
   const inner = (
     <>
       <span className="leaf">
-        <Leaf size={92} tone={tone === 'green' ? 'ribbon' : 'ribbon'} />
+        <Leaf size={92} />
       </span>
       <span className="label">{children}</span>
     </>
@@ -42,14 +42,23 @@ export function LeafButton({ href, children, size = 'md', tone = 'green', classN
 export function GhostButton({ href, children, size = 'md', tone = 'green', className = '' }: { href: string; children: ReactNode; size?: 'md' | 'lg'; tone?: Tone; className?: string }) {
   const colours = tone === 'green' ? 'text-forest border border-hair bg-white/60 hover:bg-white' : 'text-white border border-white/25 hover:bg-white/10'
   const external = /^https?:\/\//.test(href)
-  const cls = `${pill} ${sizes[size]} ${colours} ${className}`
+  // Every button carries the leaf; only the colours differ.
+  const cls = `leaf-btn ${pill} ${sizes[size]} ${colours} ${className}`
+  const inner = (
+    <>
+      <span className="leaf">
+        <Leaf size={92} />
+      </span>
+      <span className="label">{children}</span>
+    </>
+  )
   return external ? (
     <a href={href} className={cls}>
-      {children}
+      {inner}
     </a>
   ) : (
     <Link href={href} className={cls}>
-      {children}
+      {inner}
     </Link>
   )
 }

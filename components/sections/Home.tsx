@@ -10,22 +10,21 @@ import { PricingCards } from './PricingCards'
 // ---------------------------------------------------------------------------
 export function Hero({ home }: { home: Home }) {
   return (
-    <section className="relative overflow-hidden pt-4 pb-16 sm:pt-8 sm:pb-24">
+    <section className="relative overflow-hidden pt-6 pb-20 sm:pt-10 sm:pb-28">
       <Container>
-        {/* The words sit high and the phone hangs below the fold: whoever
-            arrives sees the whole ask -- headline, line, Start free -- without
-            scrolling, and the phone is the reason to. */}
-        <div className="grid items-start gap-10 md:grid-cols-[1.1fr_0.9fr]">
-          <div className="md:pt-6">
+        {/* The ask -- headline, line, Start free -- shows without scrolling;
+            the phone is half in view and the reason to scroll. */}
+        <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="md:-mt-10">
             <Reveal>
               <Eyebrow>Money, seen coming</Eyebrow>
             </Reveal>
-            <WordPullUp text={home.hero_title} className="mt-3 text-[44px] font-extrabold leading-[1.02] tracking-[-0.03em] text-forest sm:text-[60px] lg:text-[70px]" />
+            <WordPullUp text={home.hero_title} className="mt-4 text-[44px] font-extrabold leading-[1.02] tracking-[-0.03em] text-forest sm:text-[64px] lg:text-[76px]" />
             <Reveal delay={0.35}>
-              <p className="mt-5 max-w-[520px] text-[18px] leading-relaxed text-muted sm:text-[19px]">{home.hero_line}</p>
+              <p className="mt-6 max-w-[520px] text-[18px] leading-relaxed text-muted sm:text-[20px]">{home.hero_line}</p>
             </Reveal>
             <Reveal delay={0.5}>
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <LeafButton href={home.hero_button_link} size="lg">
                   {home.hero_button} <IconArrowRight size={18} />
                 </LeafButton>
@@ -35,7 +34,7 @@ export function Hero({ home }: { home: Home }) {
               </div>
             </Reveal>
           </div>
-          <Reveal delay={0.25} className="mx-auto w-[min(72vw,320px)] md:w-[330px]">
+          <Reveal delay={0.25} className="mx-auto w-[min(72vw,320px)] md:w-[340px]">
             <HeroPhone>
               <Phone src={home.hero_image} alt="The Zogal home screen: safe to spend today" priority />
             </HeroPhone>
@@ -118,26 +117,26 @@ export function BusinessBand({ properties }: { properties: Property[] }) {
 function BusinessComposition() {
   return (
     <div className="relative mx-auto h-[280px] w-full max-w-[380px] select-none" aria-hidden>
-      <div className="absolute left-2 top-10 w-[62%] rotate-[-6deg] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
+      <TiltCard strength={10} lift baseRotate={-6} className="absolute left-2 top-10 w-[62%] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">Today&apos;s sales</p>
         <p className="tabular mt-2 text-[28px] font-extrabold text-forest">₦412,900</p>
         <div className="mt-3 h-2 w-full rounded bg-mint-soft">
           <div className="h-2 w-[68%] rounded bg-action" />
         </div>
-      </div>
-      <div className="absolute right-0 top-0 w-[58%] rotate-[5deg] rounded-2xl bg-forest p-5 text-white shadow-[var(--shadow-surface-hover)]">
+      </TiltCard>
+      <TiltCard strength={10} lift baseRotate={5} className="absolute right-0 top-0 w-[58%] rounded-2xl bg-forest p-5 text-white shadow-[var(--shadow-surface-hover)]">
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-signal">Stock</p>
         <ul className="mt-2 grid gap-1.5 text-[13px]">
           <li className="flex justify-between"><span>Rice, 50kg</span><span className="tabular text-white/70">18</span></li>
           <li className="flex justify-between"><span>Oil, 25L</span><span className="tabular text-white/70">6</span></li>
           <li className="flex justify-between"><span>Sugar, 1kg</span><span className="tabular text-signal">low</span></li>
         </ul>
-      </div>
-      <div className="absolute bottom-0 right-8 w-[60%] rotate-[-2deg] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
+      </TiltCard>
+      <TiltCard strength={10} lift baseRotate={-2} className="absolute bottom-0 right-8 w-[60%] rounded-2xl bg-white p-5 shadow-[var(--shadow-surface-hover)] ring-1 ring-hair">
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">VAT this month</p>
         <p className="tabular mt-2 text-[22px] font-extrabold text-forest">₦31,020</p>
         <p className="mt-1 text-[12px] text-muted">Worked out as you sell. Filed in one tap.</p>
-      </div>
+      </TiltCard>
     </div>
   )
 }
@@ -147,9 +146,9 @@ function BusinessComposition() {
 // ---------------------------------------------------------------------------
 export function Reasons({ home }: { home: Home }) {
   const points = [
-    { title: home.point_1_title, body: home.point_1_body, image: home.point_1_image },
-    { title: home.point_2_title, body: home.point_2_body, image: home.point_2_image },
-    { title: home.point_3_title, body: home.point_3_body, image: home.point_3_image },
+    { title: home.point_1_title, body: home.point_1_body, image: home.point_1_image, focus: home.point_1_focus },
+    { title: home.point_2_title, body: home.point_2_body, image: home.point_2_image, focus: home.point_2_focus },
+    { title: home.point_3_title, body: home.point_3_body, image: home.point_3_image, focus: home.point_3_focus },
   ]
   return (
     <section className="py-8 sm:py-12">
@@ -168,10 +167,14 @@ export function Reasons({ home }: { home: Home }) {
                     <h3 className="mt-2 text-[28px] font-extrabold leading-[1.1] tracking-[-0.02em] text-forest sm:text-[34px]">{p.title}</h3>
                     <p className="mt-4 max-w-[440px] text-[17px] leading-relaxed text-muted">{p.body}</p>
                   </div>
-                  {/* The whole screen, every time: what the card is about may be
-                      at the bottom of it (a sheet) as easily as the top. */}
-                  <div className="mx-auto w-[min(56vw,230px)] md:w-[250px]">
-                    <Phone src={p.image} alt={p.title} />
+                  {/* A window onto the phone, showing the end that matters: the
+                      top for a screen whose point is up there, the bottom for a
+                      sheet. Chosen per reason in the back office. */}
+                  <div className="relative mx-auto h-[380px] w-[min(60vw,260px)] overflow-hidden md:h-[420px] md:w-[280px]">
+                    <div className={`absolute inset-x-0 ${p.focus === 'bottom' ? 'bottom-0' : 'top-0'}`}>
+                      <Phone src={p.image} alt={p.title} />
+                    </div>
+                    <div className={`pointer-events-none absolute inset-x-0 h-16 ${p.focus === 'bottom' ? 'top-0 bg-gradient-to-b' : 'bottom-0 bg-gradient-to-t'} from-white/95 to-transparent`} />
                   </div>
                 </div>
               </TiltCard>

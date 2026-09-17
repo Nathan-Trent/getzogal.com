@@ -20,12 +20,16 @@ export interface Home {
   point_1_title: string
   point_1_body: string
   point_1_image: string
+  /** Which end of the screen the card shows: 'top' or 'bottom'. */
+  point_1_focus: string
   point_2_title: string
   point_2_body: string
   point_2_image: string
+  point_2_focus: string
   point_3_title: string
   point_3_body: string
   point_3_image: string
+  point_3_focus: string
   closing_title: string
   closing_body: string
 }
@@ -99,12 +103,15 @@ export const DEFAULTS: Site = {
     point_1_title: 'Log it in seconds',
     point_1_body: 'Snap a receipt, forward a bank alert, or tap it in. Zogal reads the numbers and sorts them for you.',
     point_1_image: '/phones/scan.webp',
+    point_1_focus: 'bottom',
     point_2_title: 'Know before it happens',
     point_2_body: 'Every day Zogal works out what you can spend and still make it to payday — and says so plainly when the pace will not hold.',
     point_2_image: '/phones/insight-runout.webp',
+    point_2_focus: 'top',
     point_3_title: 'Every naira, at once',
     point_3_body: 'Where the money went this period, by category, with the ones that grew called out. No spreadsheet, no guessing.',
     point_3_image: '/phones/period.webp',
+    point_3_focus: 'bottom',
     closing_title: 'Money you can see coming.',
     closing_body: 'Free to start. Naira first, dollars too. Nothing to set up but you.',
   },

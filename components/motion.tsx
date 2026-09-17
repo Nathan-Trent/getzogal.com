@@ -81,21 +81,26 @@ export function HeroPhone({ children }: { children: ReactNode }) {
 }
 
 /** A card that tilts a few degrees toward the pointer. */
-export function TiltCard({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function TiltCard({ children, className = '', strength = 6, lift = false, baseRotate = 0 }: { children: ReactNode; className?: string; strength?: number; lift?: boolean; baseRotate?: number }) {
   const reduced = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
   const [t, setT] = useState({ x: 0, y: 0 })
+  const on = t.x !== 0 || t.y !== 0
   return (
     <div
       ref={ref}
       className={className}
-      style={{ transform: `perspective(900px) rotateX(${t.y}deg) rotateY(${t.x}deg)`, transition: 'transform 250ms ease' }}
+      style={{
+        transform: `perspective(900px) rotateX(${t.y}deg) rotateY(${t.x}deg) rotateZ(${baseRotate}deg)${lift && on ? ' translateY(-6px) scale(1.03)' : ''}`,
+        transition: on ? 'transform 150ms ease-out' : 'transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        zIndex: lift && on ? 2 : undefined,
+      }}
       onPointerMove={(e) => {
         if (reduced || !ref.current || e.pointerType !== 'mouse') return
         const r = ref.current.getBoundingClientRect()
         const x = (e.clientX - r.left) / r.width - 0.5
         const y = (e.clientY - r.top) / r.height - 0.5
-        setT({ x: x * 6, y: -y * 6 })
+        setT({ x: x * strength, y: -y * strength })
       }}
       onPointerLeave={() => setT({ x: 0, y: 0 })}
     >
