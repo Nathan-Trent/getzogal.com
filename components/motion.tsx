@@ -226,6 +226,78 @@ export function Branch({ direction = 'across' }: { direction?: 'across' | 'down'
   )
 }
 
+/**
+ * Leaves drifting across a forest band: four, large and faint, each on its
+ * own slow loop. Life in the background, never in the way of the words.
+ */
+const DRIFTS = [
+  { left: '-8%', top: '-20%', size: 520, t: '38s', d: '0s', dx: '40px', dy: '30px', r0: '-20deg', r1: '-8deg' },
+  { left: '62%', top: '30%', size: 420, t: '46s', d: '-12s', dx: '-50px', dy: '20px', r0: '150deg', r1: '164deg' },
+  { left: '30%', top: '60%', size: 300, t: '52s', d: '-25s', dx: '30px', dy: '-40px', r0: '70deg', r1: '58deg' },
+  { left: '82%', top: '-15%', size: 260, t: '41s', d: '-6s', dx: '-30px', dy: '30px', r0: '-100deg', r1: '-112deg' },
+]
+
+export function LeafField({ children }: { children?: ReactNode }) {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      {DRIFTS.map((l, i) => (
+        <span
+          key={i}
+          className="drift"
+          style={{ left: l.left, top: l.top, width: l.size, height: l.size, '--t': l.t, '--d': l.d, '--dx': l.dx, '--dy': l.dy, '--r0': l.r0, '--r1': l.r1 } as React.CSSProperties}
+        >
+          {children}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * The closing flourish: a short stem draws in under the headline and a
+ * leaf opens at its end. Once, when it comes into view.
+ */
+export function Flourish() {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const reduced = useReducedMotion()
+  const go = reduced || inView
+  return (
+    <div ref={ref} className="mx-auto mt-6 flex h-10 w-[220px] items-center justify-center" aria-hidden>
+      <svg viewBox="0 0 220 40" width="220" height="40" fill="none">
+        <motion.path
+          d="M 4 30 C 60 8, 120 8, 176 22"
+          stroke="#16A34A"
+          strokeOpacity="0.7"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: go ? 1 : 0 }}
+          transition={{ duration: 1.1, ease: [0.2, 0.8, 0.2, 1] }}
+        />
+        <motion.g
+          style={{ originX: '176px', originY: '22px' }}
+          initial={{ scale: 0, rotate: -30 }}
+          animate={{ scale: go ? 1 : 0, rotate: go ? 0 : -30 }}
+          transition={{ duration: 0.6, delay: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          <g transform="translate(172 2) scale(0.34)">
+            <defs>
+              <linearGradient id="flourish-leaf" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stopColor="#0F5E52" />
+                <stop offset="0.45" stopColor="#16A34A" />
+                <stop offset="1" stopColor="#C6F542" />
+              </linearGradient>
+            </defs>
+            <path d="M8 92 C 12 50, 40 18, 92 8 C 90 40, 74 76, 36 90 C 26 93, 16 94, 8 92 Z" fill="url(#flourish-leaf)" />
+            <path d="M8 92 C 30 72, 56 46, 92 8" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2.5" strokeLinecap="round" />
+          </g>
+        </motion.g>
+      </svg>
+    </div>
+  )
+}
+
 /** First visit only: the mark breathes in, then the page. */
 export function Splash() {
   // Decided once, on the client, from a sessionStorage flag: shown on the

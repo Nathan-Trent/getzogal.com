@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { IconArrowRight, IconCheck } from '@tabler/icons-react'
 import type { Pricing } from '@/lib/content'
 import { LeafButton } from '@/components/ui'
+import { TiltCard } from '@/components/motion'
 
 /**
  * The plans, exactly as Finance published them and Marketing pushed them.
@@ -20,7 +21,7 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
 
   if (pricing.plans.length === 0) {
     return (
-      <div className={`${card} max-w-[520px]`}>
+      <TiltCard strength={5} lift className={`${card} max-w-[520px]`}>
         <h3 className={`text-[26px] font-extrabold tracking-[-0.02em] ${title}`}>Free to start</h3>
         <p className={`mt-2 text-[16px] leading-relaxed ${muted}`}>Everything you need to see your money coming. Paid plans arrive when Zogal has earned them.</p>
         <div className="mt-6">
@@ -28,7 +29,7 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
             Start free <IconArrowRight size={18} />
           </LeafButton>
         </div>
-      </div>
+      </TiltCard>
     )
   }
 
@@ -48,7 +49,7 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
           const price = p.prices.find((x) => x.interval === interval) ?? p.prices[0] ?? null
           const free = !price || price.amount === 0
           return (
-            <div key={p.key} className={`${card} flex flex-col`}>
+            <TiltCard key={p.key} strength={5} lift className={`${card} flex flex-col`}>
               <h3 className={`text-[22px] font-extrabold tracking-[-0.02em] ${title}`}>{p.name}</h3>
               {p.description ? <p className={`mt-1 text-[15px] leading-relaxed ${muted}`}>{p.description}</p> : null}
               <p className={`tabular mt-5 text-[34px] font-extrabold tracking-[-0.02em] ${title}`}>
@@ -71,7 +72,7 @@ export function PricingCards({ pricing, signup, onDark = false }: { pricing: Pri
                   {free ? 'Start free' : `Get ${p.name}`}
                 </LeafButton>
               </div>
-            </div>
+            </TiltCard>
           )
         })}
       </div>

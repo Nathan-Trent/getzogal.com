@@ -2,7 +2,7 @@ import { IconArrowRight, IconBolt, IconEye, IconReceipt } from '@tabler/icons-re
 import type { Home, Pricing, Property } from '@/lib/content'
 import { Leaf } from '@/components/Leaf'
 import { Container, Eyebrow, GhostButton, LeafButton, Phone } from '@/components/ui'
-import { Branch, HeroPhone, Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
+import { Branch, Flourish, HeroPhone, LeafField, Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
 import { PricingCards } from './PricingCards'
 
 // ---------------------------------------------------------------------------
@@ -238,7 +238,9 @@ export function HowItWorks() {
 export function PricingBand({ pricing, signup }: { pricing: Pricing; signup: string }) {
   return (
     <section className="band py-20 sm:py-28">
-      <Leaf size={900} className="pointer-events-none absolute -left-60 -top-40 opacity-[0.04]" tone="white" />
+      <LeafField>
+        <Leaf size={520} tone="white" />
+      </LeafField>
       <Container className="relative">
         <Reveal>
           <Eyebrow tone="white">Pricing</Eyebrow>
@@ -258,7 +260,8 @@ export function Closing({ home, signup }: { home: Home; signup: string }) {
       <Container>
         <Reveal className="text-center">
           <h2 className="mx-auto max-w-[760px] text-[40px] font-extrabold leading-[1.04] tracking-[-0.03em] text-forest sm:text-[60px]">{home.closing_title}</h2>
-          <p className="mx-auto mt-5 max-w-[520px] text-[18px] leading-relaxed text-muted">{home.closing_body}</p>
+          <Flourish />
+          <p className="mx-auto mt-2 max-w-[520px] text-[18px] leading-relaxed text-muted">{home.closing_body}</p>
           <div className="mt-8 flex justify-center">
             <LeafButton href={signup} size="lg">
               {home.hero_button} <IconArrowRight size={18} />

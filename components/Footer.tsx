@@ -3,6 +3,7 @@ import { IconBrandInstagram, IconBrandLinkedin, IconBrandX, IconMail } from '@ta
 import type { Footer as FooterContent, Property } from '@/lib/content'
 import { Container, Wordmark } from './ui'
 import { Leaf } from './Leaf'
+import { LeafField } from './motion'
 
 export function Footer({ content, properties, appHref }: { content: FooterContent; properties: Property[]; appHref: string }) {
   const socials = [
@@ -13,7 +14,9 @@ export function Footer({ content, properties, appHref }: { content: FooterConten
 
   return (
     <footer className="band mt-24">
-      <Leaf size={640} className="pointer-events-none absolute -bottom-40 -right-32 opacity-[0.05]" tone="white" />
+      <LeafField>
+        <Leaf size={520} tone="white" />
+      </LeafField>
       <Container className="relative py-16">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
