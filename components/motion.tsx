@@ -46,6 +46,40 @@ export function WordPullUp({ text, className = '' }: { text: string; className?:
   )
 }
 
+/**
+ * The hero phone: rests at a slight lean and follows the pointer -- tilting
+ * toward it and lifting -- then settles back. Same idea as the cards, more
+ * of it, because this one is the product.
+ */
+export function HeroPhone({ children }: { children: ReactNode }) {
+  const reduced = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const [t, setT] = useState({ x: 0, y: 0, on: false })
+  const rest = { rx: 0, ry: 0, rz: -4 }
+  return (
+    <div
+      ref={ref}
+      style={{
+        transform: t.on
+          ? `perspective(1100px) rotateX(${t.y}deg) rotateY(${t.x}deg) rotateZ(-2deg) translateY(-6px) scale(1.02)`
+          : `perspective(1100px) rotateX(${rest.rx}deg) rotateY(${rest.ry}deg) rotateZ(${rest.rz}deg)`,
+        transition: t.on ? 'transform 120ms ease-out' : 'transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        willChange: 'transform',
+      }}
+      onPointerMove={(e) => {
+        if (reduced || !ref.current || e.pointerType !== 'mouse') return
+        const r = ref.current.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width - 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5
+        setT({ x: x * 16, y: -y * 12, on: true })
+      }}
+      onPointerLeave={() => setT({ x: 0, y: 0, on: false })}
+    >
+      {children}
+    </div>
+  )
+}
+
 /** A card that tilts a few degrees toward the pointer. */
 export function TiltCard({ children, className = '' }: { children: ReactNode; className?: string }) {
   const reduced = useReducedMotion()

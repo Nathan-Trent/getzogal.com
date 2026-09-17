@@ -2,7 +2,7 @@ import { IconArrowRight, IconBolt, IconEye, IconReceipt } from '@tabler/icons-re
 import type { Home, Pricing, Property } from '@/lib/content'
 import { Leaf } from '@/components/Leaf'
 import { Container, Eyebrow, GhostButton, LeafButton, Phone } from '@/components/ui'
-import { Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
+import { HeroPhone, Reveal, Stem, TiltCard, WordPullUp } from '@/components/motion'
 import { PricingCards } from './PricingCards'
 
 // ---------------------------------------------------------------------------
@@ -10,19 +10,22 @@ import { PricingCards } from './PricingCards'
 // ---------------------------------------------------------------------------
 export function Hero({ home }: { home: Home }) {
   return (
-    <section className="relative overflow-hidden pt-10 pb-20 sm:pt-16 sm:pb-28">
+    <section className="relative overflow-hidden pt-4 pb-16 sm:pt-8 sm:pb-24">
       <Container>
-        <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
-          <div>
+        {/* The words sit high and the phone hangs below the fold: whoever
+            arrives sees the whole ask -- headline, line, Start free -- without
+            scrolling, and the phone is the reason to. */}
+        <div className="grid items-start gap-10 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="md:pt-6">
             <Reveal>
               <Eyebrow>Money, seen coming</Eyebrow>
             </Reveal>
-            <WordPullUp text={home.hero_title} className="mt-4 text-[44px] font-extrabold leading-[1.02] tracking-[-0.03em] text-forest sm:text-[64px] lg:text-[76px]" />
+            <WordPullUp text={home.hero_title} className="mt-3 text-[44px] font-extrabold leading-[1.02] tracking-[-0.03em] text-forest sm:text-[60px] lg:text-[70px]" />
             <Reveal delay={0.35}>
-              <p className="mt-6 max-w-[520px] text-[18px] leading-relaxed text-muted sm:text-[20px]">{home.hero_line}</p>
+              <p className="mt-5 max-w-[520px] text-[18px] leading-relaxed text-muted sm:text-[19px]">{home.hero_line}</p>
             </Reveal>
             <Reveal delay={0.5}>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <LeafButton href={home.hero_button_link} size="lg">
                   {home.hero_button} <IconArrowRight size={18} />
                 </LeafButton>
@@ -32,8 +35,10 @@ export function Hero({ home }: { home: Home }) {
               </div>
             </Reveal>
           </div>
-          <Reveal delay={0.25} className="mx-auto w-[min(72vw,320px)] md:w-[340px]">
-            <Phone src={home.hero_image} alt="The Zogal home screen: safe to spend today" priority tilt={-4} />
+          <Reveal delay={0.25} className="mx-auto w-[min(72vw,320px)] md:w-[330px]">
+            <HeroPhone>
+              <Phone src={home.hero_image} alt="The Zogal home screen: safe to spend today" priority />
+            </HeroPhone>
           </Reveal>
         </div>
       </Container>
@@ -157,20 +162,16 @@ export function Reasons({ home }: { home: Home }) {
           {points.map((p, i) => (
             <Reveal key={p.title}>
               <TiltCard className="surface surface-hover overflow-hidden">
-                <div className={`grid items-center gap-8 px-7 pt-7 pb-0 sm:px-10 sm:pt-10 md:grid-cols-2 ${i % 2 ? 'md:[&>*:first-child]:order-2' : ''}`}>
+                <div className={`grid items-center gap-8 p-7 sm:p-10 md:grid-cols-2 ${i % 2 ? 'md:[&>*:first-child]:order-2' : ''}`}>
                   <div>
                     <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-action">0{i + 1}</p>
                     <h3 className="mt-2 text-[28px] font-extrabold leading-[1.1] tracking-[-0.02em] text-forest sm:text-[34px]">{p.title}</h3>
                     <p className="mt-4 max-w-[440px] text-[17px] leading-relaxed text-muted">{p.body}</p>
                   </div>
-                  {/* The phone peeks up from the card's bottom edge: the top of the
-                      screen is what matters, and a whole phone made every card a
-                      screen and a half tall. */}
-                  <div className="relative mx-auto h-[380px] w-[min(60vw,260px)] overflow-hidden md:h-[420px] md:w-[280px]">
-                    <div className="absolute inset-x-0 top-0">
-                      <Phone src={p.image} alt={p.title} />
-                    </div>
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/95 to-transparent" />
+                  {/* The whole screen, every time: what the card is about may be
+                      at the bottom of it (a sheet) as easily as the top. */}
+                  <div className="mx-auto w-[min(56vw,230px)] md:w-[250px]">
+                    <Phone src={p.image} alt={p.title} />
                   </div>
                 </div>
               </TiltCard>

@@ -22,7 +22,7 @@ export function Header({ appHref }: { appHref: string }) {
 
   return (
     <header className={`sticky top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300 ${scrolled ? 'bg-ground/85 backdrop-blur-md border-b border-hair shadow-[0_1px_0_rgba(6,44,26,0.03)]' : 'bg-transparent border-b border-transparent'}`}>
-      <div className="mx-auto flex h-[72px] w-full max-w-[1120px] items-center justify-between px-5 sm:px-8">
+      <div className="mx-auto flex h-[64px] w-full max-w-[1120px] items-center justify-between px-5 sm:px-8">
         <Link href="/" aria-label="Zogal home" onClick={() => setOpen(false)}>
           <Wordmark />
         </Link>

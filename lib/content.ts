@@ -143,7 +143,8 @@ export async function getSite(): Promise<Site> {
   let raw: Partial<Record<keyof Site, unknown>> = {}
   try {
     const res = await fetch(`${CONTENT_URL}/api/marketing/content`, {
-      next: { tags: ['content'], revalidate: 3600 },
+      // Five minutes on its own; at once when the back office calls /api/revalidate.
+      next: { tags: ['content'], revalidate: 300 },
     })
     if (res.ok) raw = (await res.json()) as typeof raw
     else console.error('content fetch answered', res.status)
