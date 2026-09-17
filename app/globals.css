@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   getzogal.com — the public face of the Zogal family.
+
+   Depth without glass. Three levels, always:
+     ground   — off-white with a pale wash of the app's own gradient
+     surface  — white cards on the ground, hairline edge, two shadows
+     emphasis — forest bands with a faint signal glow
+   One typeface (Manrope), one accent (action green), one ornament
+   (the leaf), used in four places and nowhere else.
+   ============================================================ */
+
+@theme {
+  --color-ground: #f7f9f7;
+  --color-ink: #101418;
+  --color-muted: #66706b;
+  --color-forest: #062c1a;
+  --color-deep: #104e2f;
+  --color-action: #16a34a;
+  --color-signal: #4ade80;
+  --color-mint: #c6e5d5;
+  --color-mint-soft: #e6f0ec;
+  --color-lime: #c6f542;
+  --color-teal: #0f5e52;
+  --color-hair: rgba(6, 44, 26, 0.08);
+
+  --font-sans: var(--font-manrope), 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 24px;
+  --radius-pill: 999px;
+
+  --shadow-surface: 0 1px 2px rgba(6, 44, 26, 0.04), 0 12px 40px rgba(6, 44, 26, 0.06);
+  --shadow-surface-hover: 0 1px 2px rgba(6, 44, 26, 0.05), 0 20px 56px rgba(6, 44, 26, 0.1);
+  --shadow-phone: 0 2px 4px rgba(6, 44, 26, 0.08), 0 40px 90px rgba(6, 44, 26, 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-ink);
+  background-color: var(--color-ground);
+  /* The app's light-mode gradient, at a fifth of its strength, drifting slowly. */
+  background-image:
+    radial-gradient(1200px 700px at 8% 0%, rgba(200, 230, 212, 0.55), transparent 60%),
+    radial-gradient(1000px 600px at 92% 30%, rgba(168, 204, 224, 0.4), transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, rgba(178, 216, 204, 0.4), transparent 60%);
+  background-attachment: fixed;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Surface: the card. */
+.surface {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--color-hair);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-surface);
+  transition: box-shadow 350ms ease, transform 350ms ease;
+}
+.surface-hover:hover {
+  box-shadow: var(--shadow-surface-hover);
+  transform: translateY(-2px);
+}
+
+/* Emphasis: the forest band. */
+.band {
+  position: relative;
+  overflow: hidden;
+  color: #f8faf9;
+  background: var(--color-forest);
+  background-image: radial-gradient(900px 500px at 85% -10%, rgba(74, 222, 128, 0.22), transparent 60%);
+}
+
+/* The skeleton texture, borrowed from the app: a slow light sweep. Used
+   as the hover on surfaces and while a phone screen arrives. */
+@keyframes sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+.sweep {
+  position: relative;
+  overflow: hidden;
+  background: #e8f1ec;
+}
+.sweep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.9) 50%, transparent 70%);
+  animation: sweep 1.8s ease-in-out infinite;
+}
+
+/* The leaf button: the tip peeks in at rest, unfurls behind the label on hover. */
+.leaf-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.leaf-btn .leaf {
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 92px;
+  height: 92px;
+  transform: translate(-72%, -50%) rotate(-28deg);
+  transform-origin: 80% 50%;
+  opacity: 0.9;
+  transition: transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 380ms ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.leaf-btn:hover .leaf,
+.leaf-btn:focus-visible .leaf {
+  transform: translate(-8%, -50%) rotate(-12deg);
+  opacity: 1;
+}
+.leaf-btn .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.leaf-btn:hover .label,
+.leaf-btn:focus-visible .label {
+  transform: translateX(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .sweep::after {
+    animation: none;
+  }
+  .leaf-btn .leaf,
+  .leaf-btn .label,
+  .surface {
+    transition: none;
+  }
+}
